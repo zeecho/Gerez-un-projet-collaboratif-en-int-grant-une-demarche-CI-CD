@@ -24,18 +24,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Verify lock file presence
-      run: ls -la
-    - name: Check front directory contents
-      run: ls -la front
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+      working-directory: front
     #- run: npm run build --if-present
     - run: npm run test:prod
+      working-directory: front
     - run: npm run lint
+      working-directory: front
     #- run: npm test
 
