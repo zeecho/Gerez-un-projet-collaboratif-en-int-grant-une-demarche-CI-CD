@@ -33,5 +33,11 @@ jobs:
       - name: Install Maven dependencies
         run: mvn install
 
-      - name: Run tests
-        run: mvn --batch-mode --update-snapshots verify
+      - name: Run tests with JaCoCo
+        run: mvn --batch-mode --update-snapshots verify jacoco:report
+
+      - name: Upload JaCoCo report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-report
+          path: back/target/site/jacoco
