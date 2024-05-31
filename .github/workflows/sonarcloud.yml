@@ -5,8 +5,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  java:
-    name: Build and analyze Java
+  bobapp:
+    name: Build and analyze with Sonarcloud
     runs-on: ubuntu-latest
     defaults:
       run:
