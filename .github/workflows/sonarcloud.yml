@@ -36,8 +36,6 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build project
         run: mvn clean install
-      - name: List files in back/target
-        run: ls -la ./back/target
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
