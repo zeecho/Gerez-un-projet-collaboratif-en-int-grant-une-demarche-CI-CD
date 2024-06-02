@@ -38,6 +38,18 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
         working-directory: back
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - name: Run npm ci
+        run: npm ci
+        working-directory: front
+      - name: Run npm test
+        run: npm run test -- --code-coverage
+        working-directory: front
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
