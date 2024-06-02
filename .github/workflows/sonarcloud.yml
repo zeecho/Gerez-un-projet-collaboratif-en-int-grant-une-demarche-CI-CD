@@ -8,7 +8,7 @@ on:
 
 jobs:
   back:
-    name: Build and analyze back with Sonarcloud
+    name: Build and analyze back with SonarCloud
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,14 +40,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD -Dsonar.java.binaries=target
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
   front:
-    name: Build and analyze front with Sonarcloud
+    name: Build and analyze front with SonarCloud
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
     strategy:
       matrix:
         node-version: [18]
@@ -58,7 +55,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: package-lock.json
       - run: npm ci
         working-directory: front
       - run: npm run test -- --code-coverage
@@ -68,3 +64,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: .
+
