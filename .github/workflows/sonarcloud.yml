@@ -36,11 +36,13 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build project
         run: mvn clean install
+      - name: List files in back/target
+        run: ls -la ./back/target
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD -X
 
   front:
     name: Build and analyze front with Sonarcloud
