@@ -1,9 +1,11 @@
 name: SonarCloud
+
 on:
   push:
     branches: [ main ]
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   back:
     name: Build and analyze back with Sonarcloud
@@ -38,6 +40,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
         working-directory: back
+
   front:
     name: Build and analyze front with Sonarcloud
     runs-on: ubuntu-latest
@@ -48,21 +51,20 @@ jobs:
       matrix:
         node-version: [18]
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: package-lock.json
-    - run: npm ci
-      working-directory: front
-    - run: npm run test -- --code-coverage
-      working-directory: front
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run test -- --code-coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: .
+
