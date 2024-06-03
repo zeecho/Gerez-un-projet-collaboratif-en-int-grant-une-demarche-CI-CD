@@ -35,6 +35,13 @@ jobs:
     - run: npm run test -- --code-coverage
       working-directory: front
 
+    - name: SonarCloud Scan Front
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        projectBaseDir: ./front
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
