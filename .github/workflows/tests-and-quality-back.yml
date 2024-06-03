@@ -1,4 +1,3 @@
-
 name: Tests back (Spring Boot)
 on:
   pull_request:
@@ -31,6 +30,7 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Set up the Maven dependencies caching
         uses: actions/cache@v3
         with:
@@ -43,15 +43,23 @@ jobs:
 
       - name: Run tests with JaCoCo
         run: mvn --batch-mode --update-snapshots verify jacoco:report
-        working-directory: back
+
+      - name: Verify JaCoCo report
+        run: ls -l target/site/jacoco/jacoco.xml
 
       - name: SonarCloud Scan Back
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back -D
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target/classes -Dsonar.tests=src/test/java -Dsonar.sources=src/main/java -Dsonar.projectName="Bob App Back" -Dsonar.organization=zeecho -Pcoverage
-        working-directory: back
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.projectKey=zeecho-bobapp-back \
+          -Dsonar.organization=zeecho \
+          -Dsonar.projectName="Bob App Back" \
+          -Dsonar.sources=src/main/java \
+          -Dsonar.tests=src/test/java \
+          -Dsonar.java.binaries=target/classes \
+          -Dsonar.sourceEncoding=UTF-8 \
+          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v2
