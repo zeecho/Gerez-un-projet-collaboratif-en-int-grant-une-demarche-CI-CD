@@ -50,7 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back -D
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target/classes -Dsonar.tests=src/test/java -Dsonar.sources=src/main/java -Dsonar.projectName="Bob App Back" -Dsonar.organization=zeecho
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target/classes -Dsonar.tests=src/test/java -Dsonar.sources=src/main/java -Dsonar.projectName="Bob App Back" -Dsonar.organization=zeecho -Pcoverage
         working-directory: back
 
       - name: Upload JaCoCo report
