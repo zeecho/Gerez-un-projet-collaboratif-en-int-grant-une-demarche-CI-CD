@@ -48,9 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: ./back
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=zeecho-bobapp-back -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target -Dsonar.sources=src -Dsonar.projectName="Bob App Back" -Dsonar.organization=zeecho
 
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v2
